@@ -9,7 +9,7 @@ use App\Models\TransaksiStatus;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 
-class TransaksiMasukController extends Controller
+class TransaksiKeluarController extends Controller
 {
 
     /**
@@ -29,19 +29,19 @@ class TransaksiMasukController extends Controller
      */
     public function index()
     {
-        return view('transaksi.masuk');
+        return view('transaksi.keluar');
     }
 
     public function ajax(Request $request)
     {
         if ($request->ajax()) {
-            $data = Transaksi::with('dompet', 'kategori')->where('status_id', '1')->get();
+            $data = Transaksi::with('dompet', 'kategori')->where('status_id', '2')->get();
             return Datatables::of($data)->addColumn('kategori', function ($data) {
                 return $data->kategori->nama;
             })->addColumn('dompet', function ($data) {
                 return $data->dompet->nama;
             })->addColumn('nilai', function ($data) {
-                return '(+) '.$data->nilai;
+                return '(-) '.$data->nilai;
             })->make(true);
 
         }
@@ -57,11 +57,11 @@ class TransaksiMasukController extends Controller
         $status = TransaksiStatus::orderBy('nama')->get();
         $kategori = Kategori::orderBy('nama')->get();
         $dompet = Dompet::orderBy('nama')->get();        
-        $lastId = Transaksi::select('kode')->where('status_id', '1')->orderBy('id','desc')->first();
-        $lastId = (int)substr($lastId->kode , 3);
-        $kode = 'WIN'.str_pad($lastId+1,6,'0',STR_PAD_LEFT);
+        $lastId = Transaksi::select('kode')->where('status_id', '2')->orderBy('id','desc')->first();
+        $lastId = (int)substr($lastId->kode , 4);
+        $kode = 'WOUT'.str_pad($lastId+1,6,'0',STR_PAD_LEFT);
         $tanggal = date('Y-m-d');
-        return view('transaksi.masuk-add', compact('status', 'kategori', 'dompet', 'kode', 'tanggal'));
+        return view('transaksi.keluar-add', compact('status', 'kategori', 'dompet', 'kode', 'tanggal'));
     }
 
     /**
@@ -83,9 +83,9 @@ class TransaksiMasukController extends Controller
             'nilai' => $request->nilai,
             'kategori_id' => $request->kategori_id,
             'dompet_id' => $request->dompet_id,
-            'status_id' => 1
+            'status_id' => 2
         ]);
-        return redirect('transaksi/data-masuk');
+        return redirect('transaksi/data-keluar');
         // return $request;
     }
 

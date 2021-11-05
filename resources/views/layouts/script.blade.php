@@ -145,4 +145,48 @@ integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yA
             "ajax": "{{ url('transaksi/data-masuk-get') }}",
         });
     });
+
+    $(document).ready(function() {
+        dt = $('#keluar-table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "columns": [{
+                    "data": "id",
+                    "name": "id",
+                    "title": "#"
+                },
+                {
+                    "data": "tanggal",
+                    "name": "tanggal",
+                    "title": "TANGGAL"
+                },
+                {
+                    "data": "kode",
+                    "name": "kode",
+                    "title": "KODE"
+                },
+                {
+                    "data": "deskripsi",
+                    "name": "deskripsi",
+                    "title": "DESKRIPSI"
+                },
+                {
+                    "data": "kategori",
+                    "name": "kategori",
+                    "title": "KATEGORI"
+                },
+                {
+                    "data": "nilai",
+                    "name": "nilai",
+                    "title": "NILAI"
+                },
+                {
+                    "data": "dompet",
+                    "name": "dompet",
+                    "title": "DOMPET"
+                },
+            ],
+            "ajax": "{{ url('transaksi/data-keluar-get') }}",
+        });
+    });
 </script>
