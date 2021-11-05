@@ -37,8 +37,18 @@ class DompetController extends Controller
             return Datatables::of($data)->addColumn('status', function ($data) {
                 return $data->dompet_status->nama;
             })->addColumn('action', function ($data) {
-                return 'halo';
+                if ($data->dompet_status->id == 1) {
+                    $simbol = 'times';
+                    $tooltip = 'Tidak Aktif';
+                } else if ($data->dompet_status->id == 2) {
+                    $simbol = 'check';
+                    $tooltip = 'Aktif';
+                }
+                return '<a href="data-dompet-detail/' . $data->id . '" class="btn btn-xs btn-primary mr-2" data-toggle="tooltip" data-placement="top" title="Detail"><i class="fas fa-search"></i></a>
+                <a href="data-dompet-edit/' . $data->id . '" class="btn btn-xs btn-primary mr-2" data-toggle="tooltip" data-placement="top" title="Ubah"><i class="fas fa-edit"></i></a>
+                <a href="ubah-status-dompet/'.$data->id.'" class="btn btn-xs btn-primary mr-2" data-toggle="tooltip" data-placement="top" title="' . $tooltip . '"><i class="fas fa-' . $simbol . '"></i></a>';
             })->make(true);
+
         }
     }
 
@@ -49,7 +59,8 @@ class DompetController extends Controller
      */
     public function create()
     {
-        //
+        $status = DompetStatus::orderBy('nama')->get();
+        return view('dompet.dompet-add', compact('status'));
     }
 
     /**
@@ -60,7 +71,17 @@ class DompetController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nama' => 'required|min:5',
+            'deskripsi' => 'max:100',
+        ]);
+        Dompet::create([
+            'nama' => $request->nama,
+            'referensi' => $request->referensi,
+            'deskripsi' => $request->deskripsi,
+            'status_id' => $request->status_id
+        ]);
+        return redirect('master/data-dompet');
     }
 
     /**
@@ -71,7 +92,8 @@ class DompetController extends Controller
      */
     public function show($id)
     {
-        //
+        $dompet = Dompet::findOrFail($id);
+        return view('dompet.dompet-detail', compact('dompet'));
     }
 
     /**
@@ -82,7 +104,9 @@ class DompetController extends Controller
      */
     public function edit($id)
     {
-        //
+        $dompet = Dompet::findOrFail($id);
+        $status = DompetStatus::orderBy('nama')->get();
+        return view('dompet.dompet-edit', compact('dompet', 'status'));
     }
 
     /**
@@ -94,7 +118,13 @@ class DompetController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'nama' => 'required|min:5',
+            'deskripsi' => 'max:100',
+        ]);
+        $dompet = Dompet::findOrFail($id);
+        $dompet->update($request->all());
+        return redirect('master/data-dompet');
     }
 
     /**
@@ -106,5 +136,19 @@ class DompetController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function ubah($id)
+    {
+        $dompet = Dompet::findOrFail($id);
+        if($dompet->status_id == 1){
+            $dompet->status_id = 2;
+            $dompet->save();
+        } else if ($dompet->status_id == 2){
+            $dompet->status_id = 1;
+            $dompet->save();
+        }
+
+        return back();
     }
 }

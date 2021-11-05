@@ -4,7 +4,7 @@
     <div class="card mt-2">
         <div class="card-header">
             <h2 class="card-title">Dompet</h2>
-            <a><button type="button" class="btn btn-info btn-sm" style="float: right;"><i class="fa fa-plus"></i>Buat
+            <a href="data-dompet-add"><button type="button" class="btn btn-info btn-sm" style="float: right;">Buat
                     Baru</button></a>
         </div>
         <div class="card-body">
