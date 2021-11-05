@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDompetTable extends Migration
+class CreateKategoriTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateDompetTable extends Migration
      */
     public function up()
     {
-        Schema::create('dompet', function (Blueprint $table) {
+        Schema::create('kategori', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->string('referensi')->nullable();
             $table->string('deskripsi')->nullable();
             $table->unsignedBigInteger('status_id');
             $table->timestamps();
-            $table->foreign('status_id')->references('id')->on('dompet_status');
+            $table->foreign('status_id')->references('id')->on('kategori_status');
         });
     }
 
@@ -31,6 +30,6 @@ class CreateDompetTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dompet');
+        Schema::dropIfExists('kategori');
     }
 }
