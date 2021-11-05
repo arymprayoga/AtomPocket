@@ -44,6 +44,31 @@
                     </li>
                 </ul>
             </li>
+            <li class="nav-item {{ request()->is('transaksi/*') ? 'menu-open' : '' }}">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-database"></i>
+                    <p>
+                        Transaksi
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{ route('data-masuk') }}"
+                        class="nav-link {{ request()->is('transaksi/data-masuk') ? 'active' : '' }}">
+                        <i class="fas fa-wallet nav-icon"></i>
+                        <p>Dompet Masuk</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('data-keluar') }}"
+                        class="nav-link {{ request()->is('transaksi/data-keluar') ? 'active' : '' }}">
+                        <i class="fas fa-database nav-icon"></i>
+                        <p>Dompet Keluar</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('logout') }}"
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

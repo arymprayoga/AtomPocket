@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kategori;
+use App\Models\Transaksi;
 use App\Models\KategoriStatus;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 
-class KategoriController extends Controller
+class TransaksiMasukController extends Controller
 {
 
     /**
@@ -27,27 +27,23 @@ class KategoriController extends Controller
      */
     public function index()
     {
-        return view('kategori.kategori');
+        // $data = Transaksi::with('dompet', 'kategori')->where('status_id', '1')->get();
+        return view('transaksi.masuk');
+        // return $data;
     }
 
     public function ajax(Request $request)
     {
         if ($request->ajax()) {
-            $data = Kategori::with('kategori_status')->get();
-            return Datatables::of($data)->addColumn('status', function ($data) {
-                return $data->kategori_status->nama;
-            })->addColumn('action', function ($data) {
-                if ($data->kategori_status->id == 1) {
-                    $simbol = 'times';
-                    $tooltip = 'Tidak Aktif';
-                } else if ($data->kategori_status->id == 2) {
-                    $simbol = 'check';
-                    $tooltip = 'Aktif';
-                }
-                return '<a href="data-kategori-detail/' . $data->id . '" class="btn btn-xs btn-primary mr-2" data-toggle="tooltip" data-placement="top" title="Detail"><i class="fas fa-search"></i></a>
-                <a href="data-kategori-edit/' . $data->id . '" class="btn btn-xs btn-primary mr-2" data-toggle="tooltip" data-placement="top" title="Ubah"><i class="fas fa-edit"></i></a>
-                <a href="ubah-status-kategori/'.$data->id.'" class="btn btn-xs btn-primary mr-2" data-toggle="tooltip" data-placement="top" title="' . $tooltip . '"><i class="fas fa-' . $simbol . '"></i></a>';
+            $data = Transaksi::with('dompet', 'kategori')->where('status_id', '1')->get();
+            return Datatables::of($data)->addColumn('kategori', function ($data) {
+                return $data->kategori->nama;
+            })->addColumn('dompet', function ($data) {
+                return $data->dompet->nama;
+            })->addColumn('nilai', function ($data) {
+                return '(+) '.$data->nilai;
             })->make(true);
+
         }
     }
 
