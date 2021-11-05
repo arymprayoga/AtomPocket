@@ -12,11 +12,11 @@
     @endif
     <div class="row">
         <div class="col-12 text-right">
-            <a href="data-dompet" class="btn btn-primary pull-right">Kelola Dompet</a>
+            <a href="data-kategori" class="btn btn-primary pull-right">Kelola Kategori</a>
         </div>
     </div>
 
-    <form action="{{ route('add-master-dompet-process') }}" method="post">
+    <form action="{{ route('add-master-kategori-process') }}" method="post">
         {{ csrf_field() }}
         <div class="modal-body">
             <div class="row">
@@ -24,12 +24,6 @@
                     <div class="form-group">
                         <label for="nama">Nama : *</label>
                         <input type="text" class="form-control" required name="nama" id="nama" minlength="5">
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="form-group">
-                        <label for="referensi">Referensi</label>
-                        <input type="referensi" class="form-control" name="referensi" id="referensi">
                     </div>
                 </div>
             </div>

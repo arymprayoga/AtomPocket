@@ -35,6 +35,13 @@
                         <p>Dompet</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ route('data-kategori') }}"
+                        class="nav-link {{ request()->is('master/data-kategori') ? 'active' : '' }}">
+                        <i class="fas fa-database nav-icon"></i>
+                        <p>Kategori</p>
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li class="nav-item">

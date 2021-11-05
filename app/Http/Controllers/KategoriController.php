@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kategori;
+use App\Models\KategoriStatus;
 use Illuminate\Http\Request;
+use Yajra\Datatables\Datatables;
 
 class KategoriController extends Controller
 {
@@ -26,6 +28,8 @@ class KategoriController extends Controller
     public function index()
     {
         return view('kategori.kategori');
+        // $data = Kategori::with('kategori_status')->get();
+        // return $data[0]->kategori_status->nama;
     }
 
     public function ajax(Request $request)
@@ -33,12 +37,12 @@ class KategoriController extends Controller
         if ($request->ajax()) {
             $data = Kategori::with('kategori_status')->get();
             return Datatables::of($data)->addColumn('status', function ($data) {
-                return $data->dompet_status->nama;
+                return $data->kategori_status->nama;
             })->addColumn('action', function ($data) {
-                if ($data->dompet_status->id == 1) {
+                if ($data->kategori_status->id == 1) {
                     $simbol = 'times';
                     $tooltip = 'Tidak Aktif';
-                } else if ($data->dompet_status->id == 2) {
+                } else if ($data->kategori_status->id == 2) {
                     $simbol = 'check';
                     $tooltip = 'Aktif';
                 }
@@ -57,7 +61,8 @@ class KategoriController extends Controller
      */
     public function create()
     {
-        //
+        $status = KategoriStatus::orderBy('nama')->get();
+        return view('kategori.kategori-add', compact('status'));
     }
 
     /**
@@ -68,7 +73,16 @@ class KategoriController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nama' => 'required|min:5',
+            'deskripsi' => 'max:100',
+        ]);
+        Kategori::create([
+            'nama' => $request->nama,
+            'deskripsi' => $request->deskripsi,
+            'status_id' => $request->status_id
+        ]);
+        return redirect('master/data-kategori');
     }
 
     /**
@@ -79,7 +93,8 @@ class KategoriController extends Controller
      */
     public function show($id)
     {
-        //
+        $kategori = Kategori::findOrFail($id);
+        return view('kategori.kategori-detail', compact('kategori'));
     }
 
     /**
@@ -90,7 +105,9 @@ class KategoriController extends Controller
      */
     public function edit($id)
     {
-        //
+        $kategori = Kategori::findOrFail($id);
+        $status = KategoriStatus::orderBy('nama')->get();
+        return view('kategori.kategori-edit', compact('kategori', 'status'));
     }
 
     /**
@@ -102,7 +119,13 @@ class KategoriController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'nama' => 'required|min:5',
+            'deskripsi' => 'max:100',
+        ]);
+        $kategori = Kategori::findOrFail($id);
+        $kategori->update($request->all());
+        return redirect('master/data-kategori');
     }
 
     /**
@@ -114,5 +137,19 @@ class KategoriController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function ubah($id)
+    {
+        $kategori = Kategori::findOrFail($id);
+        if($kategori->status_id == 1){
+            $kategori->status_id = 2;
+            $kategori->save();
+        } else if ($kategori->status_id == 2){
+            $kategori->status_id = 1;
+            $kategori->save();
+        }
+
+        return back();
     }
 }

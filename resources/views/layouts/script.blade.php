@@ -66,4 +66,39 @@ integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yA
             "ajax": "{{ url('master/data-dompet-get') }}",
         });
     });
+
+    $(document).ready(function() {
+        dt = $('#kategori-table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "columns": [{
+                    "data": "id",
+                    "name": "id",
+                    "title": "#"
+                },
+                {
+                    "data": "nama",
+                    "name": "nama",
+                    "title": "NAMA"
+                },
+                {
+                    "data": "deskripsi",
+                    "name": "deskripsi",
+                    "title": "Deskripsi"
+                },
+                {
+                    "data": "status",
+                    "name": "status",
+                    "title": "Status"
+                },
+                {
+                    "data": "action",
+                    "name": "action",
+                    "orderable": false,
+                    "searchable": false
+                },
+            ],
+            "ajax": "{{ url('master/data-kategori-get') }}",
+        });
+    });
 </script>

@@ -29,4 +29,13 @@ Route::prefix('master/')->group(function () {
     Route::get('data-dompet-edit/{id}', [App\Http\Controllers\DompetController::class, 'edit'])->name('edit-master-dompet');
     Route::post('data-dompet-edit-process/{id}', [App\Http\Controllers\DompetController::class, 'update'])->name('edit-master-dompet-process');
     Route::get('ubah-status-dompet/{id}', [App\Http\Controllers\DompetController::class, 'ubah'])->name('ubah-status-dompet');
+
+    Route::get('data-kategori', [App\Http\Controllers\KategoriController::class, 'index'])->name('data-kategori');
+    Route::get('data-kategori-get', [App\Http\Controllers\KategoriController::class, 'ajax'])->name('data-kategori-get');
+    Route::get('data-kategori-add', [App\Http\Controllers\KategoriController::class, 'create'])->name('add-master-kategori');
+    Route::post('data-kategori-add-process', [App\Http\Controllers\KategoriController::class, 'store'])->name('add-master-kategori-process');
+    Route::get('data-kategori-detail/{id}', [App\Http\Controllers\KategoriController::class, 'show'])->name('detail-master-kategori');
+    Route::get('data-kategori-edit/{id}', [App\Http\Controllers\KategoriController::class, 'edit'])->name('edit-master-kategori');
+    Route::post('data-kategori-edit-process/{id}', [App\Http\Controllers\KategoriController::class, 'update'])->name('edit-master-kategori-process');
+    Route::get('ubah-status-kategori/{id}', [App\Http\Controllers\KategoriController::class, 'ubah'])->name('ubah-status-kategori');
 });
