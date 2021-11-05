@@ -18,6 +18,6 @@ class DompetStatus extends Model
 
     public function dompet()
     {
-        return $this->hasMany(Dompet::class);
+        return $this->hasMany(Dompet::class, 'id', 'status_id');
     }
 }

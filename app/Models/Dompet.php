@@ -21,6 +21,6 @@ class Dompet extends Model
 
     public function dompet_status()
     {
-        return $this->belongsTo(DompetStatus::class);
+        return $this->belongsTo(DompetStatus::class, 'status_id', 'id');
     }
 }
